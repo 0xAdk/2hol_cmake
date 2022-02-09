@@ -8,6 +8,9 @@ set(TIME_PLATFORM_PATH unix)
 set(DIRECTORY_PLATFORM Unix)
 set(DIRECTORY_PLATFORM_PATH unix)
 
+set(POLL_PLATFORM Linux)
+set(POLL_PLATFORM_PATH linux)
+
 add_library(minorGemsCommon STATIC)
 
 # TODO: replace GLU in link_libraries with GLUT
@@ -58,7 +61,7 @@ add_library(minorGemsServer STATIC)
 target_link_libraries(minorGemsServer minorGemsCommon)
 
 target_sources(minorGemsServer PUBLIC
-	./minorGems/network/${PLATFORM_PATH}/SocketPoll${PLATFORM}.cpp
+	./minorGems/network/${POLL_PLATFORM_PATH}/SocketPoll${POLL_PLATFORM}.cpp
 )
 
 add_library(minorGemsClient STATIC)
