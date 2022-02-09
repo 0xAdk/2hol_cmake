@@ -1,0 +1,3 @@
+[submodule "lib/minorGems/minorGems"]
+	path = lib/minorGems/minorGems
+	url = https://github.com/twohoursonelife/minorGems.git
