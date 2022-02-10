@@ -3,7 +3,6 @@ add_executable(client)
 target_link_libraries(client minorGemsClient)
 
 target_compile_features(client PRIVATE cxx_std_17)
-target_compile_definitions(client PRIVATE LINUX)
 target_include_directories(client PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_sources(client PRIVATE
 	${PROJECT_SOURCE_DIR}/lib/minorGems/minorGems/game/platforms/SDL/gameSDL.cpp

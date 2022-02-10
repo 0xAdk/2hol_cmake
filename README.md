@@ -1,20 +1,37 @@
 This is a test to see how it would look if 2hol was built using cmake.
 
-This currently only builds the linux binaries for the client and server
-
 # Build instructions
-pull down minorGems submodule and generate build directory (this only has to be done once)
+This assumes you are compiling on linux
+
+## Setup
+pull down minorGems submodule
 ```sh
 git submodule update --init --recursive
+```
+
+generate build directory
+
+by default you can add `-DCMAKE_BUILD_TYPE=[Debug|Release|RelWithDebInfo|MinSizeRel]` to change how the binaray is built
+### To compile for linux
+```sh
 cmake -B build
 ```
 
-compile the client and server
+### To compile for windows
 ```sh
-cmake --build build
+cmake -B build -DCMAKE_TOOLCHAIN_FILE=./toolchains/win32_cross_compile.cmake
 ```
 
-if you only want to compiler one of either the server or the client you can use the `--target` flag
+## After Setup
+you can tell cmake to only compile the client or the server with the `--target [server|client]` flag
+and you can use the `-jN` flag to tell cmake to compile with more then one thread
+
+this will compile the client using 8 threads
 ```sh
-cmake --build build --target [server|client]
+cmake --build build -j8 --target client
+```
+
+this will compile the client and the server using 1 thread
+```sh
+cmake --build build
 ```

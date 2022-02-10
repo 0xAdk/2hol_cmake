@@ -1,28 +1,53 @@
-# For linux only
-set(PLATFORM Linux)
-set(PLATFORM_PATH linux)
-
-set(TIME_PLATFORM Unix)
-set(TIME_PLATFORM_PATH unix)
-
-set(DIRECTORY_PLATFORM Unix)
-set(DIRECTORY_PLATFORM_PATH unix)
-
-set(POLL_PLATFORM Linux)
-set(POLL_PLATFORM_PATH linux)
-
 add_library(minorGemsCommon STATIC)
 
-# TODO: replace GLU in link_libraries with GLUT
-#       (this will require replacing deprecated functions)
-# find_package(GLUT REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(SDL REQUIRED)
-find_package(X11 REQUIRED)
 find_package(Threads REQUIRED)
-target_link_libraries(minorGemsCommon GLU OpenGL::OpenGL SDL::SDL X11::X11 Threads::Threads)
+target_link_libraries(minorGemsCommon PUBLIC
+	OpenGL::GL
+	OpenGL::GLU
+	# don't use SDL::SDL since cmake 1.16 doesn't support it
+	${SDL_LIBRARY}
+	Threads::Threads
+)
 
-target_compile_definitions(minorGemsCommon PUBLIC LINUX)
+message(STATUS "Target system: ${CMAKE_SYSTEM}")
+if(CMAKE_SYSTEM MATCHES Linux)
+	target_compile_definitions(minorGemsCommon PUBLIC LINUX)
+
+	find_package(X11 REQUIRED)
+	target_link_libraries(minorGemsCommon PUBLIC X11::X11)
+
+	set(PLATFORM Linux)
+	set(PLATFORM_PATH linux)
+
+	set(TIME_PLATFORM Unix)
+	set(TIME_PLATFORM_PATH unix)
+
+	set(DIRECTORY_PLATFORM Unix)
+	set(DIRECTORY_PLATFORM_PATH unix)
+
+	set(POLL_PLATFORM Linux)
+	set(POLL_PLATFORM_PATH linux)
+elseif(CMAKE_SYSTEM MATCHES Windows)
+	target_compile_definitions(minorGemsCommon PUBLIC WIN_32 STATICLIB)
+
+	target_link_libraries(minorGemsCommon PUBLIC wsock32 winmm -static)
+
+	set(PLATFORM Win32)
+	set(PLATFORM_PATH win32)
+
+	set(TIME_PLATFORM Win32)
+	set(TIME_PLATFORM_PATH win32)
+
+	set(DIRECTORY_PLATFORM Win32)
+	set(DIRECTORY_PLATFORM_PATH win32)
+
+	set(POLL_PLATFORM Unix)
+	set(POLL_PLATFORM_PATH unix)
+endif()
+
+
 target_include_directories(minorGemsCommon PUBLIC .)
 
 target_sources(minorGemsCommon PUBLIC

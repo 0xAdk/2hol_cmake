@@ -3,7 +3,6 @@ add_executable(server)
 target_link_libraries(server minorGemsServer)
 
 target_compile_features(server PRIVATE cxx_std_17)
-target_compile_definitions(server PRIVATE LINUX)
 target_include_directories(server PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_sources(server PRIVATE
 	${PROJECT_SOURCE_DIR}/src/common/SoundUsage.cpp
